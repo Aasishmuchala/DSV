@@ -15,10 +15,13 @@ cd C:/Users/aasis/AppData/Local/hermes/claude-code/dsv
 # Run tests
 python -m pytest dsv/tests/synthetic_test.py dsv/tests/edge_case_test.py -v
 
+# Run the web UI (photo upload + results display)
+python server.py   # opens http://localhost:5000
+
 # Generate the marker sheet
 python -m dsv.marker_sheet
 
-# Run the pipeline on a pair of photos
+# Run the pipeline on a pair of photos (Python API)
 from dsv.pipeline import run
 result = run("front.jpg", "side.jpg", out_dir="results/")
 ```
