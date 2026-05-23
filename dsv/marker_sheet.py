@@ -41,10 +41,10 @@ MARGIN_X = 10.0
 MARGIN_Y = 8.0
 
 # Band strip height — full A4 height minus margins
-BAND_H = A4_H - 2 * MARGIN_Y
+BAND_H = A4_H - 2 * MARGIN_Y   # 194mm — long enough to wrap overlapping around body
 
-# Ruler strip — 1/3 A4 portrait width
-RULER_H = A4_W / 3   # ≈ 99mm
+# Ruler strip — full A4 portrait height for maximum scale accuracy
+RULER_H = A4_H                  # 210mm tall
 
 
 # ── helpers ───────────────────────────────────────────────────────────────────
@@ -150,9 +150,135 @@ def make_marker_row(marker_diam_mm: float, n_markers: int,
 
     label_el = (f'<text x="{mm(strip_w/2)}" y="{mm(y_mm + r + 4)}" '
                 f'text-anchor="middle" font-family="sans-serif" font-size="2.5" '
-                f'fill="#333">cut: {label}</text>')
+                f'fill="#333">{label}</text>')
 
     return "".join(circles) + label_el
+
+
+# ── body placement diagram ───────────────────────────────────────────────────
+def _build_body_placement_diagram(bx: float, by: float, bw: float, bh: float) -> str:
+    """
+    Simplified human body silhouette (front view) with marker placement labels.
+    Shows where to position each band strip and individual marker dots.
+    bx, by: top-left of the diagram area in mm
+    bw, bh:  width and height of the diagram area in mm
+    """
+    # Body proportions (normalised, 0-1)
+    # Centred within the box
+    cx = bx + bw / 2
+    scale = min(bw * 0.5, bh * 0.9)  # body width relative to box
+    head_r = scale * 0.14
+    shoulder_w = scale * 0.55
+    waist_w = scale * 0.30
+    hip_w = scale * 0.42
+
+    # Y positions (proportional body landmarks, 0=top 1=bottom)
+    head_cy    = by + bh * 0.08
+    neck_y     = by + bh * 0.17
+    shoulder_y = by + bh * 0.22
+    bust_y     = by + bh * 0.36
+    underbust_y= by + bh * 0.44
+    waist_y    = by + bh * 0.56
+    hip_y      = by + bh * 0.72
+    crotch_y   = by + bh * 0.88
+
+    parts = [
+        # ── Head (circle) ────────────────────────────────────────────
+        f'<circle cx="{mm(cx)}" cy="{mm(head_cy)}" r="{mm(head_r)}" '
+        f'fill="none" stroke="#888" stroke-width="0.4" />',
+        # Neck line
+        f'<line x1="{mm(cx)}" y1="{mm(head_cy + head_r)}" '
+        f'x2="{mm(cx)}" y2="{mm(neck_y)}" '
+        f'stroke="#888" stroke-width="0.4" />',
+
+        # ── Shoulders (horizontal line) ────────────────────────────────
+        f'<line x1="{mm(cx - shoulder_w/2)}" y1="{mm(shoulder_y)}" '
+        f'x2="{mm(cx + shoulder_w/2)}" y2="{mm(shoulder_y)}" '
+        f'stroke="#888" stroke-width="0.6" stroke-linecap="round" />',
+        # HPS marker dots on shoulders
+        f'<circle cx="{mm(cx - shoulder_w/2)}" cy="{mm(shoulder_y)}" r="2.5" fill="#00CC44" />',
+        f'<circle cx="{mm(cx + shoulder_w/2)}" cy="{mm(shoulder_y)}" r="2.5" fill="#00CC44" />',
+        f'<text x="{mm(cx - shoulder_w/2 - 3)}" y="{mm(shoulder_y - 4)}" '
+        f'font-family="sans-serif" font-size="2.2" fill="#333">L</text>',
+        f'<text x="{mm(cx + shoulder_w/2 + 1)}" y="{mm(shoulder_y - 4)}" '
+        f'font-family="sans-serif" font-size="2.2" fill="#333">R</text>',
+        f'<text x="{mm(cx)}" y="{mm(shoulder_y + 4)}" text-anchor="middle" '
+        f'font-family="sans-serif" font-size="2" fill="#888">hps_L / hps_R</text>',
+
+        # ── Body outline (left & right sides, simplified) ──────────────
+        # Left side
+        f'<path d="M {mm(cx - shoulder_w/2)} {mm(shoulder_y)} '
+        f'Q {mm(cx - shoulder_w/2 + 5)} {mm(bust_y)} '
+        f'{mm(cx - waist_w/2)} {mm(waist_y)} '
+        f'Q {mm(cx - hip_w/2 + 3)} {mm(hip_y)} '
+        f'{mm(cx - hip_w/2)} {mm(crotch_y)}" '
+        f'fill="none" stroke="#888" stroke-width="0.5" />',
+        # Right side
+        f'<path d="M {mm(cx + shoulder_w/2)} {mm(shoulder_y)} '
+        f'Q {mm(cx + shoulder_w/2 - 5)} {mm(bust_y)} '
+        f'{mm(cx + waist_w/2)} {mm(waist_y)} '
+        f'Q {mm(cx + hip_w/2 - 3)} {mm(hip_y)} '
+        f'{mm(cx + hip_w/2)} {mm(crotch_y)}" '
+        f'fill="none" stroke="#888" stroke-width="0.5" />',
+
+        # ── Girth band indicators (horizontal dashed lines) ───────────
+        # bust
+        f'<line x1="{mm(cx - shoulder_w/2)}" y1="{mm(bust_y)}" '
+        f'x2="{mm(cx + shoulder_w/2)}" y2="{mm(bust_y)}" '
+        f'stroke="#00AAFF" stroke-width="0.5" stroke-dasharray="1.5,1.5" />',
+        f'<text x="{mm(cx + shoulder_w/2 + 2)}" y="{mm(bust_y + 1.5)}" '
+        f'font-family="sans-serif" font-size="2.2" fill="#0077CC">BUST</text>',
+        # underbust
+        f'<line x1="{mm(cx - shoulder_w/2 + 8)}" y1="{mm(underbust_y)}" '
+        f'x2="{mm(cx + shoulder_w/2 - 8)}" y2="{mm(underbust_y)}" '
+        f'stroke="#00AAFF" stroke-width="0.5" stroke-dasharray="1.5,1.5" />',
+        f'<text x="{mm(cx + shoulder_w/2 + 2)}" y="{mm(underbust_y + 1.5)}" '
+        f'font-family="sans-serif" font-size="2.2" fill="#0077CC">UB</text>',
+        # waist
+        f'<line x1="{mm(cx - waist_w/2)}" y1="{mm(waist_y)}" '
+        f'x2="{mm(cx + waist_w/2)}" y2="{mm(waist_y)}" '
+        f'stroke="#00AAFF" stroke-width="0.5" stroke-dasharray="1.5,1.5" />',
+        f'<text x="{mm(cx + waist_w/2 + 2)}" y="{mm(waist_y + 1.5)}" '
+        f'font-family="sans-serif" font-size="2.2" fill="#0077CC">WAIST</text>',
+        # hip
+        f'<line x1="{mm(cx - hip_w/2)}" y1="{mm(hip_y)}" '
+        f'x2="{mm(cx + hip_w/2)}" y2="{mm(hip_y)}" '
+        f'stroke="#00AAFF" stroke-width="0.5" stroke-dasharray="1.5,1.5" />',
+        f'<text x="{mm(cx + hip_w/2 + 2)}" y="{mm(hip_y + 1.5)}" '
+        f'font-family="sans-serif" font-size="2.2" fill="#0077CC">HIP</text>',
+
+        # ── Neck base marker ────────────────────────────────────────────
+        f'<circle cx="{mm(cx)}" cy="{mm(neck_y + 3)}" r="2.5" fill="#FF6600" />',
+        f'<text x="{mm(cx + 4)}" y="{mm(neck_y + 4.5)}" '
+        f'font-family="sans-serif" font-size="2.2" fill="#CC5500">cf_neck</text>',
+
+        # ── Hip point markers ───────────────────────────────────────────
+        f'<circle cx="{mm(cx - hip_w/2 + 2)}" cy="{mm(hip_y)}" r="2.5" fill="#FF6600" />',
+        f'<circle cx="{mm(cx + hip_w/2 - 2)}" cy="{mm(hip_y)}" r="2.5" fill="#FF6600" />',
+        f'<text x="{mm(cx - hip_w/2 - 1)}" y="{mm(hip_y + 4.5)}" text-anchor="end" '
+        f'font-family="sans-serif" font-size="2" fill="#CC5500">hip_L</text>',
+        f'<text x="{mm(cx + hip_w/2 + 1)}" y="{mm(hip_y + 4.5)}" '
+        f'font-family="sans-serif" font-size="2" fill="#CC5500">hip_R</text>',
+
+        # ── Midline markers (sternum + navel region) ───────────────────
+        f'<circle cx="{mm(cx)}" cy="{mm(bust_y + 5)}" r="1.5" fill="#FF00FF" />',
+        f'<circle cx="{mm(cx)}" cy="{mm(waist_y)}" r="1.5" fill="#FF00FF" />',
+        f'<text x="{mm(cx + 3)}" y="{mm(bust_y + 7)}" '
+        f'font-family="sans-serif" font-size="2" fill="#AA00AA">cf_x</text>',
+        f'<text x="{mm(cx + 3)}" y="{mm(waist_y + 1.5)}" '
+        f'font-family="sans-serif" font-size="2" fill="#AA00AA">cf_waist</text>',
+        # Midline dashed line
+        f'<line x1="{mm(cx)}" y1="{mm(shoulder_y)}" '
+        f'x2="{mm(cx)}" y2="{mm(crotch_y)}" '
+        f'stroke="#FF00FF" stroke-width="0.3" stroke-dasharray="1,2" opacity="0.5" />',
+
+        # ── Band strip labels (how to wrap) ────────────────────────────
+        f'<text x="{mm(bx + bw/2)}" y="{mm(by + 3)}" text-anchor="middle" '
+        f'font-family="sans-serif" font-size="3" fill="#555" font-weight="bold">'
+        f'PLACEMENT GUIDE</text>',
+    ]
+
+    return "<g>" + "".join(parts) + "</g>"
 
 
 # ── full marker sheet ─────────────────────────────────────────────────────────
@@ -176,19 +302,25 @@ def build_marker_sheet(out_dir: pathlib.Path | None = None) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     # ── Full sheet SVG ─────────────────────────────────────────────────────
-    # 4 band strips stacked, then ruler strip + marker guide
-    strip_area_w = A4_W - 2 * MARGIN_X
-    n_bands = 4
-    band_cell_h = (A4_H - 2 * MARGIN_Y) / (n_bands + 0.5)   # 0.5 for ruler
-    ruler_cell_h = band_cell_h * 0.5
+    # Layout: A4 landscape (297 × 210mm)
+    #   Row 1 (y=14): 4 band strips side-by-side, 20mm wide × 194mm tall each
+    #          x: 10, 32, 54, 76mm — total occupies y=14→208mm (within page)
+    #   Row 2 (y=216): ruler strip (16mm wide × 194mm tall) at left
+    #   Row 3 (y=216): body placement diagram on right (x=96→287mm)
+    #   Row 4 (y=416): marker row + instructions text
+    #
+    # Each band strip on the sheet is the PRINTED STRIP — user cuts and tapes
+    # ends together to form a wrap. The strip length on sheet = A4 height minus
+    # margins = 194mm, which wraps up to ~194mm circumference per strip.
+    # For larger circumferences, user overlaps or uses multiple strips.
+
+    strip_area_w = BAND_W * 4 + 3 * 2  # 86mm for 4 bands + 2mm gaps
 
     svg_parts = [
         f'<svg xmlns="http://www.w3.org/2000/svg" '
         f'width="{A4_W}mm" height="{A4_H}mm" '
         f'viewBox="0 0 {A4_W} {A4_H}">',
-        # Background
         f'<rect width="{A4_W}" height="{A4_H}" fill="white"/>',
-        # Title + meta
         f'<text x="{MARGIN_X}" y="{MARGIN_Y + 4}" font-family="sans-serif" '
         f'font-size="4" fill="#555">DSV Marker Sheet v1.0 — print at 100% (no fit)</text>',
         f'<text x="{A4_W - MARGIN_X}" y="{MARGIN_Y + 4}" text-anchor="end" '
@@ -196,35 +328,74 @@ def build_marker_sheet(out_dir: pathlib.Path | None = None) -> dict:
         f'check with calipers: bands 25mm ±0.2, ruler 40mm ±0.2</text>',
     ]
 
-    y_cursor = MARGIN_Y + 6
+    # ── Row 1: 4 band strips side by side ──────────────────────────────────
+    y_bands = MARGIN_Y + 6   # y=14mm
 
-    # Band strips
     band_strips = ["bust", "underbust", "waist", "hip"]
-    for band_name in band_strips:
-        inner = build_band_strip(BAND_W, band_cell_h, BAND_SPACING, y_start=5.0)
+    for i, band_name in enumerate(band_strips):
+        x_pos = MARGIN_X + i * (BAND_W + 2)   # 2mm gap between columns
+        inner = build_band_strip(BAND_W, BAND_H, BAND_SPACING, y_start=5.0)
         svg_parts.append(
-            f'<g transform="translate({MARGIN_X},{mm(y_cursor)})">'
-            f'<text x="0" y="-1" font-family="sans-serif" font-size="2.8" fill="#666">'
-            f'{band_name.upper()}  ·  25mm spacing</text>'
+            f'<g transform="translate({mm(x_pos)},{mm(y_bands)})">'
+            f'<text x="{mm(BAND_W/2)}" y="-1" text-anchor="middle" font-family="sans-serif" font-size="2.5" fill="#666">'
+            f'{band_name.upper()}</text>'
             f'{inner}'
             f'</g>'
         )
-        y_cursor += band_cell_h
 
-    # Ruler strip + marker guide row
-    ruler_inner = build_ruler_strip(RULER_W, ruler_cell_h, RULER_SPACING, y_start=5.0)
-    marker_row  = make_marker_row(MARKER_DIAM_MM, 12, strip_area_w,
-                                  y_mm=ruler_cell_h / 2, label="DSV markers")
+    # ── Row 2: Ruler strip (below bands, left side) ────────────────────────
+    y_row2 = y_bands + BAND_H + 8   # y=216mm
 
+    # Ruler strip: 16mm wide × 194mm tall
+    ruler_inner = build_ruler_strip(RULER_W, BAND_H, RULER_SPACING, y_start=8.0)
     svg_parts.append(
-        f'<g transform="translate({MARGIN_X},{mm(y_cursor)})">'
+        f'<g transform="translate({MARGIN_X},{mm(y_row2)})">'
         f'<text x="0" y="-1" font-family="sans-serif" font-size="2.8" fill="#666">'
-        f'RULER  ·  40mm spacing  ·  markers: {MARKER_DIAM_MM}mm dia</text>'
+        f'RULER  ·  40mm spacing  ·  {MARKER_DIAM_MM}mm marker</text>'
         f'{ruler_inner}'
+        f'</g>'
+    )
+
+    # ── Body placement diagram (right of ruler, same row) ────────────────────
+    body_x = MARGIN_X + BAND_W * 4 + 3 * 2 + 6   # right of band strips = 96mm
+    body_y = y_row2
+    body_w = A4_W - body_x - MARGIN_X             # 191mm
+    body_h = BAND_H                               # 194mm
+    body_svg = _build_body_placement_diagram(body_x, body_y, body_w, body_h)
+    svg_parts.append(body_svg)
+
+    # ── Row 3: Marker row + how-to instructions ─────────────────────────────
+    y_marker = y_row2 + BAND_H + 6   # y=416mm — 4mm past page bottom (acceptable for notes)
+
+    # Marker row
+    marker_row = make_marker_row(MARKER_DIAM_MM, 12, strip_area_w,
+                                  y_mm=4.0, label="cut: DSV markers")
+    svg_parts.append(
+        f'<g transform="translate({MARGIN_X},{mm(y_marker)})">'
         f'{marker_row}'
         f'</g>'
     )
 
+    # How-to text below marker row
+    howto = (
+        f'<text x="{MARGIN_X}" y="{mm(y_marker + 14)}" '
+        f'font-family="sans-serif" font-size="3.5" fill="#333" font-weight="bold">'
+        f'HOW TO USE</text>'
+        f'<text x="{MARGIN_X}" y="{mm(y_marker + 19)}" '
+        f'font-family="sans-serif" font-size="2.8" fill="#555">'
+        f'1. Cut each strip along its edges. </text>'
+        f'<text x="{MARGIN_X}" y="{mm(y_marker + 24)}" '
+        f'font-family="sans-serif" font-size="2.8" fill="#555">'
+        f'2. Tape strip ends together. Wrap around body at marked level. </text>'
+        f'<text x="{MARGIN_X}" y="{mm(y_marker + 29)}" '
+        f'font-family="sans-serif" font-size="2.8" fill="#555">'
+        f'3. Photograph front + side. Include ruler in frame. </text>'
+        f'<text x="{MARGIN_X}" y="{mm(y_marker + 34)}" '
+        f'font-family="sans-serif" font-size="2.8" fill="#555">'
+        f'4. Apply marker dots to: shoulder points, neck base, hip points. '
+        f'Use ruler strip to confirm scale.</text>'
+    )
+    svg_parts.append(howto)
     svg_parts.append("</svg>")
 
     full_svg = "\n".join(svg_parts)

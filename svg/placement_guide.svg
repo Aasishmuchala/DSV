@@ -1,0 +1,227 @@
+# DSV Marker Placement Guide
+<!--
+  Standalone A4 landscape SVG — clear body diagram showing
+  where to place each strip and individual marker dot.
+
+  Print at 100% scale. No fit-to-page.
+  Keep with the marker sheet.
+
+  Marker colour key:
+    🟢 green  = HPS shoulder markers (hps_L, hps_R)
+    🟠 orange = landmark markers (cf_neck, hip_L, hip_R)
+    🔵 blue   = girth band strip positions (BUST/UB/WAIST/HIP)
+    ◼ magenta = centre-front (CF) markers (cf_x, cf_waist)
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="297mm" height="210mm" viewBox="0 0 297 210">
+  <!-- Background -->
+  <rect width="297" height="210" fill="#FAFAFA"/>
+
+  <!-- Title -->
+  <text x="10" y="16" font-family="sans-serif" font-size="5" fill="#333" font-weight="bold">
+    DSV — Marker Placement Guide
+  </text>
+  <text x="287" y="16" text-anchor="end" font-family="sans-serif" font-size="3.5" fill="#888">
+    print at 100% · keep with marker sheet
+  </text>
+
+  <!-- ── STEP 1: Band Strips ─────────────────────────────────────────── -->
+  <g transform="translate(10, 22)">
+    <text x="0" y="0" font-family="sans-serif" font-size="4" fill="#555" font-weight="bold">STEP 1 — Wrap band strips at girth levels</text>
+
+    <!-- 4 strip icons -->
+    <!-- BUST -->
+    <rect x="0" y="4" width="6" height="22" fill="#CCE8FF" stroke="#0077CC" stroke-width="0.4" stroke-dasharray="1.5,1.5"/>
+    <text x="8" y="8" font-family="sans-serif" font-size="3.2" fill="#0077CC" font-weight="bold">BUST</text>
+    <text x="8" y="13" font-family="sans-serif" font-size="2.8" fill="#666">at nipple line · wrap tape ends</text>
+
+    <!-- UNDERBUST -->
+    <rect x="55" y="4" width="6" height="22" fill="#CCE8FF" stroke="#0077CC" stroke-width="0.4" stroke-dasharray="1.5,1.5"/>
+    <text x="63" y="8" font-family="sans-serif" font-size="3.2" fill="#0077CC" font-weight="bold">UNDERBUST</text>
+    <text x="63" y="13" font-family="sans-serif" font-size="2.8" fill="#666">below bust · tight but not</text>
+    <text x="63" y="17" font-family="sans-serif" font-size="2.8" fill="#666">constricting</text>
+
+    <!-- WAIST -->
+    <rect x="135" y="4" width="6" height="22" fill="#CCE8FF" stroke="#0077CC" stroke-width="0.4" stroke-dasharray="1.5,1.5"/>
+    <text x="143" y="8" font-family="sans-serif" font-size="3.2" fill="#0077CC" font-weight="bold">WAIST</text>
+    <text x="143" y="13" font-family="sans-serif" font-size="2.8" fill="#666">narrowest torso · snug</text>
+
+    <!-- HIP -->
+    <rect x="190" y="4" width="6" height="22" fill="#CCE8FF" stroke="#0077CC" stroke-width="0.4" stroke-dasharray="1.5,1.5"/>
+    <text x="198" y="8" font-family="sans-serif" font-size="3.2" fill="#0077CC" font-weight="bold">HIP</text>
+    <text x="198" y="13" font-family="sans-serif" font-size="2.8" fill="#666">fullest part below waist</text>
+  </g>
+
+  <!-- ── STEP 2: Individual marker dots ───────────────────────────────── -->
+  <g transform="translate(10, 55)">
+    <text x="0" y="0" font-family="sans-serif" font-size="4" fill="#555" font-weight="bold">STEP 2 — Place 16mm adhesive marker dots</text>
+
+    <!-- shoulder markers -->
+    <circle cx="0" cy="10" r="4" fill="#00AA00"/>
+    <text x="6" y="12" font-family="sans-serif" font-size="3" fill="#007700">hps_L · left shoulder point</text>
+    <text x="6" y="16" font-family="sans-serif" font-size="2.8" fill="#888">at the bony tip of the clavicle</text>
+
+    <circle cx="90" cy="10" r="4" fill="#00AA00"/>
+    <text x="96" y="12" font-family="sans-serif" font-size="3" fill="#007700">hps_R · right shoulder point</text>
+    <text x="96" y="16" font-family="sans-serif" font-size="2.8" fill="#888">at the bony tip of the clavicle</text>
+
+    <!-- neck base -->
+    <circle cx="170" cy="10" r="4" fill="#FF6600"/>
+    <text x="176" y="12" font-family="sans-serif" font-size="3" fill="#CC4400">cf_neck · centre neck base</text>
+    <text x="176" y="16" font-family="sans-serif" font-size="2.8" fill="#888">hollow at base of throat</text>
+
+    <!-- hip points -->
+    <circle cx="0" cy="26" r="4" fill="#FF6600"/>
+    <text x="6" y="28" font-family="sans-serif" font-size="3" fill="#CC4400">hip_L · left hip point</text>
+    <text x="6" y="32" font-family="sans-serif" font-size="2.8" fill="#888">side of body at hip level</text>
+
+    <circle cx="60" cy="26" r="4" fill="#FF6600"/>
+    <text x="66" y="28" font-family="sans-serif" font-size="3" fill="#CC4400">hip_R · right hip point</text>
+    <text x="66" y="32" font-family="sans-serif" font-size="2.8" fill="#888">side of body at hip level</text>
+
+    <!-- CF markers (optional but helps) -->
+    <circle cx="120" cy="26" r="3" fill="#BB00BB"/>
+    <text x="126" y="28" font-family="sans-serif" font-size="3" fill="#990099">cf_x · centre sternum</text>
+    <text x="126" y="32" font-family="sans-serif" font-size="2.8" fill="#888">midline at bust level (optional)</text>
+
+    <circle cx="185" cy="26" r="3" fill="#BB00BB"/>
+    <text x="191" y="28" font-family="sans-serif" font-size="3" fill="#990099">cf_waist · centre waist</text>
+    <text x="191" y="32" font-family="sans-serif" font-size="2.8" fill="#888">midline at waist level (optional)</text>
+  </g>
+
+  <!-- ── STEP 3: Body silhouette (large, clear) ───────────────────────── -->
+  <!-- Position: right side of page, clear anatomical diagram -->
+  <g transform="translate(95, 22)">
+    <!-- Label -->
+    <text x="101" y="0" font-family="sans-serif" font-size="4" fill="#555" font-weight="bold">BODY — front view</text>
+
+    <!-- Human silhouette, centred at x=101 in the 190mm wide space -->
+    <!-- Scale: body width ~80mm, height fills 150mm -->
+    <!-- bxc = 101 (centre x), by = 8 -->
+    <!-- body_h = 150mm, body scale factor -->
+
+    <!-- Let me use a different approach: draw the body outline as a path -->
+    <!-- Head: circle at top centre -->
+    <!-- Body: simplified outline with markers overlaid -->
+
+    <!-- Body centre x = 101 -->
+    <!-- Using a coordinate system where body spans ~80mm wide, 150mm tall -->
+    <!-- head centre: (101, 20), r=10 -->
+    <!-- neck: (101, 30) -->
+    <!-- shoulder line: y=38, x from 66 to 136 (span=70mm) -->
+    <!-- bust: y=62, span=78mm -->
+    <!-- waist: y=100, span=56mm -->
+    <!-- hip: y=132, span=72mm -->
+    <!-- crotch: y=158 -->
+
+    <!-- Body outline (left + right sides) -->
+    <!-- Left side: shoulder(66,38) → bust(58,62) → waist(73,100) → hip(65,132) → crotch(73,158) -->
+    <!-- Right side: mirror -->
+
+    <!-- Head -->
+    <circle cx="101" cy="20" r="10" fill="none" stroke="#888" stroke-width="0.6"/>
+    <!-- Neck -->
+    <line x1="101" y1="30" x2="101" y2="36" stroke="#888" stroke-width="0.6"/>
+    <!-- Shoulder line -->
+    <line x1="66" y1="38" x2="136" y2="38" stroke="#888" stroke-width="0.8" stroke-linecap="round"/>
+    <!-- HPS markers -->
+    <circle cx="66" cy="38" r="3.5" fill="#00AA00"/>
+    <text x="52" y="35" font-family="sans-serif" font-size="3" fill="#007700" font-weight="bold">hps_L</text>
+    <circle cx="136" cy="38" r="3.5" fill="#00AA00"/>
+    <text x="138" y="35" font-family="sans-serif" font-size="3" fill="#007700" font-weight="bold">hps_R</text>
+    <!-- Body outline left -->
+    <path d="M 66 38 Q 62 52 58 62 Q 66 80 73 100 Q 66 118 65 132 Q 68 145 73 158"
+          fill="none" stroke="#888" stroke-width="0.7"/>
+    <!-- Body outline right -->
+    <path d="M 136 38 Q 140 52 144 62 Q 136 80 129 100 Q 136 118 137 132 Q 134 145 129 158"
+          fill="none" stroke="#888" stroke-width="0.7"/>
+    <!-- Crotch/legs hint -->
+    <line x1="73" y1="158" x2="73" y2="168" stroke="#888" stroke-width="0.5"/>
+    <line x1="129" y1="158" x2="129" y2="168" stroke="#888" stroke-width="0.5"/>
+    <line x1="73" y1="168" x2="101" y2="168" stroke="#888" stroke-width="0.5"/>
+    <line x1="129" y1="168" x2="101" y2="168" stroke="#888" stroke-width="0.5"/>
+
+    <!-- Girth band lines -->
+    <!-- BUST (y=62, span 78mm = x 62 to 140) -->
+    <line x1="62" y1="62" x2="140" y2="62" stroke="#0077CC" stroke-width="0.8" stroke-dasharray="2,1.5"/>
+    <text x="142" y="60" font-family="sans-serif" font-size="3.2" fill="#0077CC" font-weight="bold">BUST</text>
+
+    <!-- UNDERBUST (y=72, span ~70mm = x 66 to 136) -->
+    <line x1="66" y1="72" x2="136" y2="72" stroke="#0077CC" stroke-width="0.8" stroke-dasharray="2,1.5"/>
+    <text x="138" y="70" font-family="sans-serif" font-size="3.2" fill="#0077CC" font-weight="bold">UB</text>
+
+    <!-- WAIST (y=100, span 56mm = x 73 to 129) -->
+    <line x1="73" y1="100" x2="129" y2="100" stroke="#0077CC" stroke-width="0.8" stroke-dasharray="2,1.5"/>
+    <text x="131" y="98" font-family="sans-serif" font-size="3.2" fill="#0077CC" font-weight="bold">WAIST</text>
+
+    <!-- HIP (y=132, span 72mm = x 65 to 137) -->
+    <line x1="65" y1="132" x2="137" y2="132" stroke="#0077CC" stroke-width="0.8" stroke-dasharray="2,1.5"/>
+    <text x="139" y="130" font-family="sans-serif" font-size="3.2" fill="#0077CC" font-weight="bold">HIP</text>
+
+    <!-- Band strip placeholder rectangles (show where to wrap) -->
+    <rect x="58" y="57" width="84" height="10" fill="#CCE8FF" fill-opacity="0.3" stroke="#0077CC" stroke-width="0.4" stroke-dasharray="1,1"/>
+    <rect x="62" y="67" width="78" height="10" fill="#CCE8FF" fill-opacity="0.3" stroke="#0077CC" stroke-width="0.4" stroke-dasharray="1,1"/>
+    <rect x="70" y="95" width="62" height="10" fill="#CCE8FF" fill-opacity="0.3" stroke="#0077CC" stroke-width="0.4" stroke-dasharray="1,1"/>
+    <rect x="62" y="127" width="78" height="10" fill="#CCE8FF" fill-opacity="0.3" stroke="#0077CC" stroke-width="0.4" stroke-dasharray="1,1"/>
+
+    <!-- Neck base marker -->
+    <circle cx="101" cy="35" r="3.5" fill="#FF6600"/>
+    <text x="106" y="34" font-family="sans-serif" font-size="3" fill="#CC4400" font-weight="bold">cf_neck</text>
+
+    <!-- Hip point markers -->
+    <circle cx="65" cy="132" r="3.5" fill="#FF6600"/>
+    <text x="48" y="131" font-family="sans-serif" font-size="3" fill="#CC4400" font-weight="bold">hip_L</text>
+    <circle cx="137" cy="132" r="3.5" fill="#FF6600"/>
+    <text x="139" y="131" font-family="sans-serif" font-size="3" fill="#CC4400" font-weight="bold">hip_R</text>
+
+    <!-- CF midline markers -->
+    <line x1="101" y1="38" x2="101" y2="158" stroke="#990099" stroke-width="0.4" stroke-dasharray="1,2"/>
+    <circle cx="101" cy="65" r="2.5" fill="#BB00BB"/>
+    <text x="104" y="64" font-family="sans-serif" font-size="2.5" fill="#990099">cf_x</text>
+    <circle cx="101" cy="100" r="2.5" fill="#BB00BB"/>
+    <text x="104" y="99" font-family="sans-serif" font-size="2.5" fill="#990099">cf_w</text>
+
+    <!-- Ruler placement note -->
+    <line x1="155" y1="38" x2="155" y2="158" stroke="#666" stroke-width="0.5" stroke-dasharray="2,2"/>
+    <text x="157" y="45" font-family="sans-serif" font-size="3" fill="#666">Place</text>
+    <text x="157" y="50" font-family="sans-serif" font-size="3" fill="#666">ruler</text>
+    <text x="157" y="55" font-family="sans-serif" font-size="3" fill="#666">strip</text>
+    <text x="157" y="60" font-family="sans-serif" font-size="3" fill="#666">beside</text>
+    <text x="157" y="65" font-family="sans-serif" font-size="3" fill="#666">body</text>
+    <text x="157" y="70" font-family="sans-serif" font-size="3" fill="#666">in</text>
+    <text x="157" y="75" font-family="sans-serif" font-size="3" fill="#666">frame</text>
+
+    <!-- Left side legend for body diagram -->
+    <text x="-85" y="15" font-family="sans-serif" font-size="3.2" fill="#007700">● hps_L/R</text>
+    <text x="-85" y="22" font-family="sans-serif" font-size="3.2" fill="#CC4400">● cf_neck</text>
+    <text x="-85" y="29" font-family="sans-serif" font-size="3.2" fill="#CC4400">● hip_L/R</text>
+    <text x="-85" y="36" font-family="sans-serif" font-size="3.2" fill="#990099">● CF mid</text>
+    <text x="-85" y="43" font-family="sans-serif" font-size="3.2" fill="#0077CC">— girth</text>
+  </g>
+
+  <!-- ── STEP 3: Photographing ────────────────────────────────────────── -->
+  <g transform="translate(10, 175)">
+    <text x="0" y="0" font-family="sans-serif" font-size="4" fill="#555" font-weight="bold">STEP 3 — Photograph</text>
+    <text x="0" y="5" font-family="sans-serif" font-size="2.8" fill="#666">FRONT: full body in frame, ruler strip visible at side, markers visible</text>
+    <text x="0" y="10" font-family="sans-serif" font-size="2.8" fill="#666">SIDE: 90° profile, same ruler + markers in frame</text>
+    <text x="0" y="15" font-family="sans-serif" font-size="2.8" fill="#666">Good lighting · phone camera · no flash · natural light preferred</text>
+
+    <!-- Camera icon -->
+    <g transform="translate(275, 0)">
+      <rect x="-8" y="-4" width="16" height="12" rx="1" fill="none" stroke="#888" stroke-width="0.5"/>
+      <circle cx="0" cy="2" r="3" fill="none" stroke="#888" stroke-width="0.5"/>
+      <rect x="-3" y="-6" width="6" height="3" fill="#888"/>
+    </g>
+  </g>
+
+  <!-- Colour key -->
+  <g transform="translate(10, 200)">
+    <circle cx="0" cy="0" r="2.5" fill="#00AA00"/>
+    <text x="4" y="1.5" font-family="sans-serif" font-size="2.5" fill="#007700">Shoulder points (hps_L/R)</text>
+    <circle cx="70" cy="0" r="2.5" fill="#FF6600"/>
+    <text x="74" y="1.5" font-family="sans-serif" font-size="2.5" fill="#CC4400">Landmarks (cf_neck, hip_L/R)</text>
+    <circle cx="155" cy="0" r="2.5" fill="#BB00BB"/>
+    <text x="159" y="1.5" font-family="sans-serif" font-size="2.5" fill="#990099">Centre-front (CF) — optional</text>
+    <line x1="200" y1="-2" x2="215" y2="-2" stroke="#0077CC" stroke-width="1" stroke-dasharray="2,1.5"/>
+    <text x="218" y="1.5" font-family="sans-serif" font-size="2.5" fill="#0077CC">Girth band positions</text>
+  </g>
+</svg>
