@@ -303,16 +303,12 @@ def build_marker_sheet(out_dir: pathlib.Path | None = None) -> dict:
 
     # ── Full sheet SVG ─────────────────────────────────────────────────────
     # Layout: A4 landscape (297 × 210mm)
-    #   Row 1 (y=14): 4 band strips side-by-side, 20mm wide × 194mm tall each
-    #          x: 10, 32, 54, 76mm — total occupies y=14→208mm (within page)
-    #   Row 2 (y=216): ruler strip (16mm wide × 194mm tall) at left
-    #   Row 3 (y=216): body placement diagram on right (x=96→287mm)
-    #   Row 4 (y=416): marker row + instructions text
+    #   Row 1 (y=14): 4 band strips + ruler + body diagram, y=14→208mm (ALL ON PAGE)
+    #   Below page: marker row + instructions (off-print reference)
     #
-    # Each band strip on the sheet is the PRINTED STRIP — user cuts and tapes
-    # ends together to form a wrap. The strip length on sheet = A4 height minus
-    # margins = 194mm, which wraps up to ~194mm circumference per strip.
-    # For larger circumferences, user overlaps or uses multiple strips.
+    # Ruler placed at x=96mm (empty zone right of bands), 16mm wide × 210mm tall
+    # Body diagram at x=116mm (right of ruler), same y as bands
+    # Only 194mm of ruler prints (page overflow 16mm below — acceptable)
 
     strip_area_w = BAND_W * 4 + 3 * 2  # 86mm for 4 bands + 2mm gaps
 
@@ -328,12 +324,11 @@ def build_marker_sheet(out_dir: pathlib.Path | None = None) -> dict:
         f'check with calipers: bands 25mm ±0.2, ruler 40mm ±0.2</text>',
     ]
 
-    # ── Row 1: 4 band strips side by side ──────────────────────────────────
+# ── Band strips (left side, y=14mm) ────────────────────────────────────
     y_bands = MARGIN_Y + 6   # y=14mm
-
     band_strips = ["bust", "underbust", "waist", "hip"]
     for i, band_name in enumerate(band_strips):
-        x_pos = MARGIN_X + i * (BAND_W + 2)   # 2mm gap between columns
+        x_pos = MARGIN_X + i * (BAND_W + 2)   # x: 10, 32, 54, 76mm
         inner = build_band_strip(BAND_W, BAND_H, BAND_SPACING, y_start=5.0)
         svg_parts.append(
             f'<g transform="translate({mm(x_pos)},{mm(y_bands)})">'
@@ -343,29 +338,28 @@ def build_marker_sheet(out_dir: pathlib.Path | None = None) -> dict:
             f'</g>'
         )
 
-    # ── Row 2: Ruler strip (below bands, left side) ────────────────────────
-    y_row2 = y_bands + BAND_H + 8   # y=216mm
-
-    # Ruler strip: 16mm wide × 194mm tall
-    ruler_inner = build_ruler_strip(RULER_W, BAND_H, RULER_SPACING, y_start=8.0)
+    # ── Ruler strip (empty zone right of bands, x=96mm, y=14mm) ───────────
+    ruler_x = MARGIN_X + 4 * (BAND_W + 2)   # x=96mm
+    ruler_inner = build_ruler_strip(RULER_W, RULER_H, RULER_SPACING, y_start=8.0)
     svg_parts.append(
-        f'<g transform="translate({MARGIN_X},{mm(y_row2)})">'
+        f'<g transform="translate({mm(ruler_x)},{mm(y_bands)})">'
         f'<text x="0" y="-1" font-family="sans-serif" font-size="2.8" fill="#666">'
-        f'RULER  ·  40mm spacing  ·  {MARKER_DIAM_MM}mm marker</text>'
+        f"RULER  ·  40mm spacing  ·  {MARKER_DIAM_MM}mm marker</text>"
         f'{ruler_inner}'
         f'</g>'
     )
 
-    # ── Body placement diagram (right of ruler, same row) ────────────────────
-    body_x = MARGIN_X + BAND_W * 4 + 3 * 2 + 6   # right of band strips = 96mm
-    body_y = y_row2
-    body_w = A4_W - body_x - MARGIN_X             # 191mm
+    # ── Body placement diagram (right of ruler, same y as bands) ───────────
+    body_x = ruler_x + RULER_W + 4   # x=116mm, right of ruler
+    body_y = y_bands
+    body_w = A4_W - body_x - MARGIN_X             # ~171mm
     body_h = BAND_H                               # 194mm
     body_svg = _build_body_placement_diagram(body_x, body_y, body_w, body_h)
     svg_parts.append(body_svg)
 
-    # ── Row 3: Marker row + how-to instructions ─────────────────────────────
-    y_marker = y_row2 + BAND_H + 6   # y=416mm — 4mm past page bottom (acceptable for notes)
+    # ── Off-print: marker row + instructions ──────────────────────────────
+    y_row2 = y_bands + BAND_H + 6   # y=220mm — off-page reference
+    y_marker = y_row2 + 10   # y=230mm
 
     # Marker row
     marker_row = make_marker_row(MARKER_DIAM_MM, 12, strip_area_w,
